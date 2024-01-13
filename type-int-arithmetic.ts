@@ -40,6 +40,11 @@ type SubtractNat<A extends number, B extends number> =
       ? Negate<Length<U>>
       : never;
 
+type AddS<A, B> = A extends number
+  ? B extends number
+    ? Add<A, B>
+    : never
+  : never;
 export type Add<A extends number, B extends number> =
   IsPositive<A> extends true
     ? IsPositive<B> extends true
@@ -65,3 +70,10 @@ assertSuper<0, Add<1, -1>>();
 assertSuper<0, Add<-1, 1>>();
 assertSuper<2, Add<3, -1>>();
 assertSuper<-1, Add<2, -3>>();
+
+assertSuper<2 | 3 | 0, Negate<-3 | -2 | 0>>();
+
+assertSuper<Add<1 | 2, 1>, 2>();
+assertSuper<2 | 3, AddS<1 | 2, 1>>();
+
+type foo = IsPositive<-2 | 0>;
